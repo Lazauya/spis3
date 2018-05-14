@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skse", "skse\skse.vcxproj", "{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cbed_test", "cbed_test\cbed_test.vcxproj", "{547171CB-F934-40B9-B788-3C520FE66363}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", ".\common\common.vcxproj", "{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cbed", "cbed\cbed.vcxproj", "{C4192852-7F0B-4465-A6B4-9D0BDC1D6E41}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spis", "spis\spis.vcxproj", "{87A425A7-9E37-4477-987E-42BC2F22D6FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Debug|Win32.Build.0 = Debug|Win32
+		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Release|Win32.ActiveCfg = Release|Win32
+		{AA0365EC-47EA-45AA-BB1F-EBBCCCC466F2}.Release|Win32.Build.0 = Release|Win32
+		{547171CB-F934-40B9-B788-3C520FE66363}.Debug|Win32.ActiveCfg = Debug|Win32
+		{547171CB-F934-40B9-B788-3C520FE66363}.Debug|Win32.Build.0 = Debug|Win32
+		{547171CB-F934-40B9-B788-3C520FE66363}.Release|Win32.ActiveCfg = Release|Win32
+		{547171CB-F934-40B9-B788-3C520FE66363}.Release|Win32.Build.0 = Release|Win32
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Debug|Win32.Build.0 = Debug|Win32
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Release|Win32.ActiveCfg = Release|Win32
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Release|Win32.Build.0 = Release|Win32
+		{C4192852-7F0B-4465-A6B4-9D0BDC1D6E41}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4192852-7F0B-4465-A6B4-9D0BDC1D6E41}.Debug|Win32.Build.0 = Debug|Win32
+		{C4192852-7F0B-4465-A6B4-9D0BDC1D6E41}.Release|Win32.ActiveCfg = Release|Win32
+		{C4192852-7F0B-4465-A6B4-9D0BDC1D6E41}.Release|Win32.Build.0 = Release|Win32
+		{87A425A7-9E37-4477-987E-42BC2F22D6FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{87A425A7-9E37-4477-987E-42BC2F22D6FE}.Debug|Win32.Build.0 = Debug|Win32
+		{87A425A7-9E37-4477-987E-42BC2F22D6FE}.Release|Win32.ActiveCfg = Release|Win32
+		{87A425A7-9E37-4477-987E-42BC2F22D6FE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 8
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = .\\common\\common_vc9.vcproj
+		SccLocalPath1 = .\\common
+		SccProjectUniqueName2 = loader_common\\loader_common.vcproj
+		SccLocalPath2 = .
+		SccProjectFilePathRelativizedFromConnection2 = loader_common\\
+		SccProjectUniqueName3 = skse\\skse.vcproj
+		SccLocalPath3 = .
+		SccProjectFilePathRelativizedFromConnection3 = skse\\
+		SccProjectUniqueName4 = skse_loader\\skse_loader.vcproj
+		SccLocalPath4 = .
+		SccProjectFilePathRelativizedFromConnection4 = skse_loader\\
+		SccProjectUniqueName5 = steam_loader\\steam_loader.vcproj
+		SccLocalPath5 = .
+		SccProjectFilePathRelativizedFromConnection5 = steam_loader\\
+		SccProjectUniqueName6 = cbed_test\\cbed_test.vcproj
+		SccLocalPath6 = .
+		SccProjectFilePathRelativizedFromConnection6 = cbed_test\\
+		SccProjectUniqueName7 = steam_boot\\steam_boot.vcproj
+		SccLocalPath7 = .
+		SccProjectFilePathRelativizedFromConnection7 = steam_boot\\
+	EndGlobalSection
+EndGlobal
