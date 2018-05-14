@@ -39,7 +39,7 @@ namespace spis
 #ifdef SPIS_DEBUG
 		UInt32 idx = 0;
 #endif
-		for (auto entryData = objs->Begin(); !entryData.End(); entryData++)
+		for (auto entryData = objs->Begin(); !entryData.End(); ++entryData)
 		{
 #ifdef SPIS_DEBUG
 			_MESSAGE("%d", idx++);
@@ -48,7 +48,7 @@ namespace spis
 			auto edl = entryData->extendDataList;
 			if (edl && edl->Count())
 			{
-				for (auto bel = edl->Begin(); !bel.End(); bel++)
+				for (auto bel = edl->Begin(); !bel.End(); ++bel)
 				{
 #ifdef SPIS_DEBUG
 					_MESSAGE("inner: %d", idx++);
