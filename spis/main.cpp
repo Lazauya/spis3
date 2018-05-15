@@ -6,14 +6,16 @@
 
 #include "common/IDebugLog.h"
 
-#include "spis/AddToInventoryEntryData.h"
-#include "spis/DurabilityOps.h"
-#include "spis/ExtraDurability.h"
-#include "spis/AddOnMenuOpen.h"
+#include "AddToInventoryEntryData.h"
+#include "DurabilityOps.h"
+#include "ExtraDurability.h"
+#include "AddOnMenuOpen.h"
+#include "Serialize.h"
 
 static PluginHandle					g_pluginHandle = kPluginHandle_Invalid;
 static SKSEPapyrusInterface         * g_papyrus = NULL;
 static SKSEScaleformInterface		* g_scaleform = NULL;
+static SKSESerializationInterface	* g_serialization = NULL;
 
 extern "C"	{
 
@@ -48,6 +50,22 @@ extern "C"	{
 
 		g_scaleform = (SKSEScaleformInterface *)skse->QueryInterface(kInterface_Scaleform);
 
+
+		g_serialization = (SKSESerializationInterface *)skse->QueryInterface(kInterface_Serialization);
+
+		if (!g_serialization)
+		{
+			_MESSAGE("couldn't get serialization interface");
+			return false;
+		}
+
+		if (g_serialization->version < SKSESerializationInterface::kVersion)
+		{
+			_MESSAGE("serialization interface too old (%d expected %d)", g_serialization->version, SKSESerializationInterface::kVersion);
+
+			return false;
+		}
+
 		// ### do not do anything else in this callback
 		// ### only fill out PluginInfo and return true/false
 
@@ -60,6 +78,9 @@ extern "C"	{
 
 		g_papyrus = (SKSEPapyrusInterface *)skse->QueryInterface(kInterface_Papyrus);
 		
+		if (!spis::RegisterSerializationCallbacks(g_serialization, g_pluginHandle))
+			return false;
+
 		//install nessecary hooks
 		spis::commitHitHooks();
 		//spis::commitCtorAddDurabilityHooks();

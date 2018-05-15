@@ -6,7 +6,7 @@
 #include "BGSAttackData.h"
 #include "ExtraDurability.h"
 
-#define SPIS_DEBUG
+#define SPIS_DEBUG_2
 
 #ifdef SPIS_DEBUG
 #include "skse/PapyrusForm.h"
@@ -39,6 +39,9 @@ namespace spis
 #ifdef SPIS_DEBUG
 		UInt32 idx = 0;
 #endif
+		//add this thing to the toSave vec, if it's not already there
+		toSave[(TESObjectREFR*)attacker] = true;
+
 		for (auto entryData = objs->Begin(); !entryData.End(); ++entryData)
 		{
 #ifdef SPIS_DEBUG
@@ -65,7 +68,7 @@ namespace spis
 						{
 							auto dur = (ExtraDurability*)bel->GetByType(ExtraDurability::kExtraDurabilityType);
 							dur->setDurability(dur->durability() - 1); //placeholder op; can be changed
-#ifdef SPIS_DEBUG
+#ifdef SPIS_DEBUG_2
 							_MESSAGE("dur: %f", dur->durability());
 #endif
 						}
@@ -73,7 +76,7 @@ namespace spis
 						{
 							auto dur = (ExtraDurability*)bel->GetByType(ExtraDurability::kExtraDurabilityType);
 							dur->setDurability(dur->durability() - 1); //placeholder op
-#ifdef SPIS_DEBUG
+#ifdef SPIS_DEBUG_2
 							_MESSAGE("dur: %f", dur->durability());
 #endif
 						}

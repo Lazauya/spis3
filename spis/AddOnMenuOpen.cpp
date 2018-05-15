@@ -1,4 +1,5 @@
 #include "ExtraDurability.h"
+#include "Serialize.h"
 
 #include "skse/ScaleformAPI.h"
 #include "skse/PluginAPI.h"
@@ -84,6 +85,7 @@ namespace spis
 		{
 			if (entry.first->IsWeapon() || entry.first->IsArmor())
 			{
+				toSave[container] = true;
 				auto found = cont->data->FindItemEntry(entry.first);
 				if (!found && entry.second > 0)
 				{
@@ -112,6 +114,7 @@ namespace spis
 					{
 						ExtraDurability * newDur = ExtraDurability::Create(100);
 						BaseExtraList * newList = cbed::CreateBaseExtraList();
+						newList->Add(ExtraDurability::kExtraDurabilityType, newDur);
 						found->extendDataList->Push(newList);
 					}
 				}
