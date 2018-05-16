@@ -76,16 +76,15 @@ namespace spis
 		return itemsMap;
 	}
 
-	//TODO: add to base container aswell!
 	void __stdcall OnMenuOpen(TESObjectREFR * container)
 	{
 		ExtraContainerChanges * cont = (ExtraContainerChanges*)container->extraData.GetByType(kExtraData_ContainerChanges);
 		auto c = getActualWeaponArmorCounts(container);
+		toSave[container->CreateRefHandle()] = true;
 		for (auto & entry : c)
 		{
 			if (entry.first->IsWeapon() || entry.first->IsArmor())
 			{
-				toSave[container] = true;
 				auto found = cont->data->FindItemEntry(entry.first);
 				if (!found && entry.second > 0)
 				{

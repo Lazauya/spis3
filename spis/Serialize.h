@@ -11,7 +11,7 @@
 
 namespace spis
 {
-	extern std::unordered_map<TESObjectREFR *, bool> toSave;
+	extern std::unordered_map<UInt32, bool> toSave;
 
 	void serializeAllExtraDurability(SKSESerializationInterface * intfc);
 	void serializeContainer(SKSESerializationInterface * intfc, TESObjectREFR * container);

@@ -2,13 +2,75 @@
 
 #include <unordered_map>
 
-std::unordered_map<TESObjectREFR*, bool> spis::toSave;
+std::unordered_map<UInt32, bool> spis::toSave;
 
-#define SPIS_SERIALIZATION_VERSION 0
+#define SPIS_SERIALIZATION_VERSION 1
 #define SPIS_DEBUG
+
+#ifdef SPIS_DEBUG
+#include "skse/PapyrusForm.h"
+#endif
 
 namespace spis
 {
+#ifdef SPIS_DEBUG
+	void extraDurabilityContainerCheck(TESObjectREFR * container)
+	{
+		if (!container)
+		{
+			_MESSAGE("No container!");
+			return;
+		}
+
+		ExtraContainerChanges * inv = nullptr;
+
+		if (container->extraData.HasType(kExtraData_ContainerChanges))
+		{
+			inv = (ExtraContainerChanges*)container->extraData.GetByType(kExtraData_ContainerChanges);
+		}
+		else
+		{
+			_MESSAGE("No container changes!");
+			return;
+		}
+
+		if (!inv->data->objList->Count())
+		{
+			_MESSAGE("Container changes has no items!");
+		}
+
+		UInt32 i = 0;
+
+		for (auto entry = inv->data->objList->Begin(); !entry.End(); ++entry)
+		{
+			_MESSAGE("----------- %d ------------", i++);
+			_MESSAGE("Name: %s", papyrusForm::GetName(entry->type).data);
+			_MESSAGE("Count: %d", entry->countDelta);
+			if (entry->extendDataList->Count())
+			{
+				UInt32 j = 0;
+				_MESSAGE("EDL Count: %d", entry->extendDataList->Count());
+				for (auto bel = entry->extendDataList->Begin(); !bel.End(); ++bel)
+				{
+					if (bel->HasType(ExtraDurability::kExtraDurabilityType))
+					{
+						ExtraDurability * dur = (ExtraDurability*)bel->GetByType(ExtraDurability::kExtraDurabilityType);
+						_MESSAGE("--- %d | Dur: %f | Base Dur: %f | ID: %d", j++, dur->durability(), dur->baseDurability(), dur->ID());
+					}
+					else
+					{
+						_MESSAGE("--- %d | No ExtraDurability!", j++);
+					}
+				}
+			}
+			else
+			{
+				_MESSAGE("No ExtraData!");
+			}
+		}
+	}
+#endif
+
 	enum serializeType
 	{
 		kDurability
@@ -27,16 +89,22 @@ namespace spis
 		{
 			if (ref.second)
 			{
-				serializeContainer(intfc, ref.first);
+#ifdef SPIS_DEBUG
+				_MESSAGE("ref.fist: %d", ref.first);
+#endif
+				TESObjectREFR * obj = nullptr;
+				UInt32 id = ref.first;
+				LookupREFRByHandle(&id, &obj);
+				serializeContainer(intfc, obj);
 			}
 		}
 	}
 
 	void serializeContainer(SKSESerializationInterface * intfc, TESObjectREFR * container)
 	{
-		UInt32 id = container->CreateRefHandle();
-		intfc->WriteRecordData(&id, sizeof(UInt32));
-
+#ifdef SPIS_DEBUG
+		_MESSAGE("SC 1");
+#endif
 		struct prebuiltSerializer
 		{
 			TESForm * thisObj; //nessecary?
@@ -47,12 +115,22 @@ namespace spis
 		std::vector<prebuiltSerializer> toSerialize;
 
 		auto inv = (ExtraContainerChanges*)container->extraData.GetByType(kExtraData_ContainerChanges);
+	
+		if (!inv->data->objList->Count())
+			return;
+#ifdef SPIS_DEBUG
+		_MESSAGE("2");
+#endif
+		UInt32 id = container->CreateRefHandle();
+		intfc->WriteRecordData(&id, sizeof(UInt32));
 
 		UInt32 idx = 0;
 		for (auto entry = inv->data->objList->Begin(); !entry.End(); ++entry)
 		{
 			prebuiltSerializer ser;
 			ser.thisObj = nullptr; //set to null; if its not null later, then push to back
+			if (!entry->extendDataList->Count())
+				continue;
 			for (auto bel = entry->extendDataList->Begin(); !bel.End(); ++bel)
 			{
 				if (bel->HasType(ExtraDurability::kExtraDurabilityType))
@@ -66,7 +144,9 @@ namespace spis
 			if (ser.thisObj)
 				toSerialize.push_back(ser);
 		}
-
+#ifdef SPIS_DEBUG
+		_MESSAGE("3");
+#endif
 		UInt32 tosl = toSerialize.size();
 		intfc->WriteRecordData(&tosl, sizeof(UInt32));
 
@@ -113,28 +193,19 @@ namespace spis
 		if (!getRef)
 			return;
 
-#ifdef SPIS_DEBUG
-		_MESSAGE("0.5");
-#endif
-
-		toSave[getRef] = true;
+		toSave[han] = true;
 
 		UInt32 numItems;
 		intfc->ReadRecordData(&numItems, sizeof(UInt32));
 
 		ExtraContainerChanges * inv = nullptr;
-#ifdef SPIS_DEBUG
-		_MESSAGE("0.75");
-#endif
+
 		if (getRef->extraData.HasType(kExtraData_ContainerChanges))
 		{
 			inv = (ExtraContainerChanges*)getRef->extraData.GetByType(kExtraData_ContainerChanges);
 		}
 		else
 		{
-#ifdef SPIS_DEBUG
-			_MESSAGE("0.85???");
-#endif
 			return; //??? i'll look into this more to see if this is possible
 			//inv = ExtraContainerChanges::Create();
 		}
@@ -150,11 +221,6 @@ namespace spis
 				entry = InventoryEntryData::Create(thisForm, 0);
 				inv->data->objList->Push(entry);
 			}
-#ifdef SPIS_DEBUG
-			_MESSAGE("1 : %d", i);
-			_MESSAGE("1.01 : %d", entry->extendDataList->Count());
-			_MESSAGE("len : %d", len);
-#endif
 			SInt32 toAdd = (SInt32)len - (SInt32)entry->extendDataList->Count();
 			if (entry->extendDataList->Count())
 			{
@@ -176,34 +242,22 @@ namespace spis
 			{
 				entry->extendDataList = ExtendDataList::Create();
 			}
-#ifdef SPIS_DEBUG
-			_MESSAGE("1.02 : %d : %d", i, toAdd);
-#endif
 			for (UInt32 j = 0; j < toAdd; j++)
 			{
 				ExtraDurability * dur = unserializeExtraDurability(intfc);
 				BaseExtraList * bel = cbed::CreateBaseExtraList();
-#ifdef SPIS_DEBUG
-				_MESSAGE("1.03 : %d", i);
-#endif
 				bel->Add(ExtraDurability::kExtraDurabilityType, (BSExtraData*)dur);
-#ifdef SPIS_DEBUG
-				_MESSAGE("1.04 : %d", i);
-#endif
 				entry->extendDataList->Push(bel);
-#ifdef SPIS_DEBUG
-				_MESSAGE("1.05 : %d", i);
-#endif
 			}
 #ifdef SPIS_DEBUG
-			_MESSAGE("1.2 : %d", i);
+			extraDurabilityContainerCheck(getRef);
 #endif
 		}
 	}
 
 	void unserializeAllExtraDurability(SKSESerializationInterface * intfc)
 	{
-		toSave = std::unordered_map<TESObjectREFR*, bool>();
+		toSave = std::unordered_map<UInt32, bool>();
 
 		UInt32 type, ver, len;
 		while (intfc->GetNextRecordInfo(&type, &ver, &len))

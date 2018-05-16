@@ -40,7 +40,7 @@ namespace spis
 		UInt32 idx = 0;
 #endif
 		//add this thing to the toSave vec, if it's not already there
-		toSave[(TESObjectREFR*)attacker] = true;
+		toSave[attacker->CreateRefHandle()] = true;
 
 		for (auto entryData = objs->Begin(); !entryData.End(); ++entryData)
 		{
