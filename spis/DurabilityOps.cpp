@@ -6,7 +6,8 @@
 #include "BGSAttackData.h"
 #include "ExtraDurability.h"
 
-#define SPIS_DEBUG_2
+//#define SPIS_DEBUG_2
+#define SPIS_DEBUG
 
 #ifdef SPIS_DEBUG
 #include "skse/PapyrusForm.h"
@@ -36,26 +37,16 @@ namespace spis
 		if (!objs || !objs->Count())
 			return;
 
-#ifdef SPIS_DEBUG
-		UInt32 idx = 0;
-#endif
 		//add this thing to the toSave vec, if it's not already there
 		toSave[attacker->CreateRefHandle()] = true;
 
 		for (auto entryData = objs->Begin(); !entryData.End(); ++entryData)
 		{
-#ifdef SPIS_DEBUG
-			_MESSAGE("%d", idx++);
-			UInt32 idx_ = 0;
-#endif
 			auto edl = entryData->extendDataList;
 			if (edl && edl->Count())
 			{
 				for (auto bel = edl->Begin(); !bel.End(); ++bel)
 				{
-#ifdef SPIS_DEBUG
-					_MESSAGE("inner: %d", idx++);
-#endif
 					//add the the durability extra data if nessecary
 					if (entryData->type->IsWeapon())
 					{

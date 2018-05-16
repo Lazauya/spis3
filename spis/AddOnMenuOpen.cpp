@@ -69,7 +69,10 @@ namespace spis
 			ExtraContainerChanges * addedContainer = (ExtraContainerChanges*)container->extraData.GetByType(kExtraData_ContainerChanges);
 			for (auto entry = addedContainer->data->objList->Begin(); !entry.End(); ++entry)
 			{
-				itemsMap[entry->type] += entry->countDelta;
+				if (entry->type->IsArmor() || entry->type->IsWeapon())
+				{
+					itemsMap[entry->type] += entry->countDelta;
+				}
 			}
 		}
 
@@ -83,8 +86,8 @@ namespace spis
 		toSave[container->CreateRefHandle()] = true;
 		for (auto & entry : c)
 		{
-			if (entry.first->IsWeapon() || entry.first->IsArmor())
-			{
+			//if (entry.first->IsWeapon() || entry.first->IsArmor())
+			//{
 				auto found = cont->data->FindItemEntry(entry.first);
 				if (!found && entry.second > 0)
 				{
@@ -117,15 +120,19 @@ namespace spis
 						found->extendDataList->Push(newList);
 					}
 				}
-			}
+			//}
 		}
 	}
+
+//hooks for various menus which can store items
 
 	UInt32 kOnMenuOpen_FnAddr = GetFnAddr(OnMenuOpen);
 	UInt32 kJumpBackTo_Contianer_Addr = 0x0084A2BF;
 	UInt32 kJumpBackTo_Inventory_Addr = 0x0086A80F;
+	UInt32 kJumpBackTo_Barter_Addr = 0x00843A0F;
 	UInt32 kOnMenuOpen_Inventory_JumpAddr = 0x0086A809;
 	UInt32 kOnMenuOpen_Container_JumpAddr = 0x0084A2B9;
+	UInt32 kOnMenuOpen_Barter_JumpAddr = 0x00843A09;
 
 	void __declspec(naked) OnMenuOpen_Container_Jump(void)
 	{
@@ -155,6 +162,20 @@ namespace spis
 		}
 	}
 
+	void __declspec(naked) OnMenuOpen_Barter_Jump(void)
+	{
+		__asm
+		{
+			pushad									//1
+			push ebp								//1
+			call kOnMenuOpen_FnAddr					//5
+			popad									//1
+			xor eax, eax							//2
+			cmp byte ptr ss : [ebp + 0x12], 0x3E	//3
+			jmp kJumpBackTo_Barter_Addr
+		}
+	}
+
 	void commitInvCallback()
 	{
 		SafeWrite32(kOnMenuOpen_Container_JumpAddr, 0x90909090);
@@ -164,6 +185,11 @@ namespace spis
 		SafeWrite32(kOnMenuOpen_Inventory_JumpAddr, 0x90909090);
 		SafeWrite16(kOnMenuOpen_Inventory_JumpAddr + 0x4, 0x9090);
 		WriteRelJump(kOnMenuOpen_Inventory_JumpAddr, GetFnAddr(OnMenuOpen_Inventory_Jump));
+
+		SafeWrite32(kOnMenuOpen_Barter_JumpAddr, 0x90909090);
+		SafeWrite16(kOnMenuOpen_Barter_JumpAddr + 0x4, 0x9090);
+		WriteRelJump(kOnMenuOpen_Barter_JumpAddr, GetFnAddr(OnMenuOpen_Barter_Jump));
+		
 		RegisterScaleformInventory(AddDurabilityOnMenuOpen);
 	}
 }
