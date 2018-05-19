@@ -18,14 +18,14 @@ namespace spis
 		virtual bool IsNotEqual(const BSExtraData * rhs) const override;
 
 		static ExtraDurability * Create(Float32 baseDur = 100, Float32 dur = 100);
-		//static ExtraDurability * Create(TESForm * item);
+		static ExtraDurability * Create(TESForm * item);
 
 		void setDurability(Float32 ndur);
 		void resetDurability();
 		Float32 baseDurability() const;
 		Float32 durability() const;
 		UInt32 ID() const;
-
+		
 	private:
 		static UInt32 createID_();
 

@@ -35,6 +35,12 @@ namespace spis
 		return newDur;
 	}
 
+	ExtraDurability * ExtraDurability::Create(TESForm * baseForm)
+	{
+
+		return ExtraDurability::Create(0, 0);
+	}
+
 	void overwiteDurabilityVtable()
 	{
 		const void * BSExtraData_vtable = (void*)0x01078F94;

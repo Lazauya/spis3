@@ -176,6 +176,7 @@ namespace spis
 		}
 	}
 
+	//test comment
 	void commitInvCallback()
 	{
 		SafeWrite32(kOnMenuOpen_Container_JumpAddr, 0x90909090);
