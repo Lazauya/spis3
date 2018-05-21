@@ -11,6 +11,7 @@
 #include "ExtraDurability.h"
 #include "AddOnMenuOpen.h"
 #include "Serialize.h"
+#include "DurabilityParser.h"
 
 static PluginHandle					g_pluginHandle = kPluginHandle_Invalid;
 static SKSEPapyrusInterface         * g_papyrus = NULL;
@@ -80,6 +81,9 @@ extern "C"	{
 		
 		if (!spis::RegisterSerializationCallbacks(g_serialization, g_pluginHandle))
 			return false;
+
+		//get list of durabilities
+		spis::setupDurabilityReference("durabilities.txt");
 
 		//install nessecary hooks
 		spis::commitHitHooks();

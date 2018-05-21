@@ -94,7 +94,7 @@ namespace spis
 					InventoryEntryData * newEntry = InventoryEntryData::Create(entry.first, 0);
 					for (UInt32 i = 0; i < entry.second; i++)
 					{
-						ExtraDurability * newDur = ExtraDurability::Create(100);
+						ExtraDurability * newDur = ExtraDurability::Create(entry.first);
 						BaseExtraList * newList = cbed::CreateBaseExtraList();
 						newList->Add(ExtraDurability::kExtraDurabilityType, newDur);
 						newEntry->extendDataList->Push(newList);
@@ -108,13 +108,13 @@ namespace spis
 					{
 						if (!bel->HasType(ExtraDurability::kExtraDurabilityType))
 						{
-							ExtraDurability * newDur = ExtraDurability::Create(100);
+							ExtraDurability * newDur = ExtraDurability::Create(entry.first);
 							bel.Get()->Add(ExtraDurability::kExtraDurabilityType, newDur);
 						}
 					}
 					for (UInt32 i = 0; i < toCreate; i++)
 					{
-						ExtraDurability * newDur = ExtraDurability::Create(100);
+						ExtraDurability * newDur = ExtraDurability::Create(entry.first);
 						BaseExtraList * newList = cbed::CreateBaseExtraList();
 						newList->Add(ExtraDurability::kExtraDurabilityType, newDur);
 						found->extendDataList->Push(newList);

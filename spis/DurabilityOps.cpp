@@ -52,7 +52,7 @@ namespace spis
 					{
 						if (!bel->HasType(ExtraDurability::kExtraDurabilityType))
 						{
-							bel.Get()->Add(ExtraDurability::kExtraDurabilityType, ExtraDurability::Create(100));
+							bel.Get()->Add(ExtraDurability::kExtraDurabilityType, ExtraDurability::Create(entryData->type));
 						}
 
 						if (bel->HasType(kExtraData_WornLeft) && !strcmp(lastAttack->eventName.data, "attackStartLeftHand"))

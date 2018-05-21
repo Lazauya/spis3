@@ -39,6 +39,9 @@
     <ClCompile Include="Serialize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DurabilityParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DurabilityOps.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Serialize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DurabilityParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

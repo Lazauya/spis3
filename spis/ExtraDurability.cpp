@@ -1,4 +1,7 @@
 #include "ExtraDurability.h"
+#include "DurabilityParser.h"
+#include "skse/PapyrusForm.h"
+
 namespace spis
 {
 	//this variable is reference to get the current ID. it's assumed that it will
@@ -37,8 +40,8 @@ namespace spis
 
 	ExtraDurability * ExtraDurability::Create(TESForm * baseForm)
 	{
-
-		return ExtraDurability::Create(0, 0);
+		std::string s(papyrusForm::GetName(baseForm).data);
+		return ExtraDurability::Create(durabilityReference[s].first, durabilityReference[s].second);
 	}
 
 	void overwiteDurabilityVtable()

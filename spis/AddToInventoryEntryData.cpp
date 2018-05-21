@@ -1,5 +1,5 @@
 //this would have added extra data when the inventory entry data was added
-
+//deprecated
 #include "spis/AddToInventoryEntryData.h"
 #include "cbed/CustomBaseExtraData.h"
 #include "spis/ExtraDurability.h"
@@ -31,7 +31,7 @@ namespace spis
 				if (item >= dat->extendDataList->Count())
 				{
 					BaseExtraList * durabilityExtraList = cbed::CreateBaseExtraList();
-					ExtraDurability * durability = ExtraDurability::Create(100);
+					ExtraDurability * durability = ExtraDurability::Create(100); //keeping as old
 					durabilityExtraList->Add(ExtraDurability::kExtraDurabilityType, durability);
 					dat->extendDataList->Push(durabilityExtraList);
 				}

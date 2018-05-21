@@ -80,6 +80,7 @@
     <ClCompile Include="AddOnMenuOpen.cpp" />
     <ClCompile Include="BGSAttackData.cpp" />
     <ClCompile Include="DurabilityOps.cpp" />
+    <ClCompile Include="DurabilityParser.cpp" />
     <ClCompile Include="ExtraDurability.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="AddToInventoryEntryData.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="AddOnMenuOpen.h" />
     <ClInclude Include="BGSAttackData.h" />
     <ClInclude Include="DurabilityOps.h" />
+    <ClInclude Include="DurabilityParser.h" />
     <ClInclude Include="ExtraDurability.h" />
     <ClInclude Include="AddToInventoryEntryData.h" />
     <ClInclude Include="Serialize.h" />
