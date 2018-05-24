@@ -23,7 +23,8 @@ namespace spis
 		while (std::getline(d, item))
 		{
 			auto tokens = split(item, ';');
-			durabilityReference[tokens[0]] = std::pair<double, double>(std::stod(tokens[1]), std::stod(tokens[2]));
+			if(tokens.size() == 3)
+				durabilityReference[tokens[0]] = std::pair<double, double>(std::stod(tokens[1]), std::stod(tokens[2]));
 			}
 		}
 }

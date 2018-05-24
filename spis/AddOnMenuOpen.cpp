@@ -26,7 +26,7 @@ namespace spis
 		_MESSAGE("AddDurabilityOnMenuOpen call");
 #endif
 		auto edl = item->extendDataList;
-		for (auto bel = edl->Begin(); !bel.End(); bel++)
+		for (auto bel = edl->Begin(); !bel.End(); ++bel)
 		{
 			//only act if its a type that has durability
 			if (item->type->IsWeapon() || item->type->IsArmor())
@@ -64,7 +64,7 @@ namespace spis
 			}
 		}
 
-		if (container->extraData.HasType(kExtraData_ContainerChanges));
+		if (container->extraData.HasType(kExtraData_ContainerChanges))
 		{
 			ExtraContainerChanges * addedContainer = (ExtraContainerChanges*)container->extraData.GetByType(kExtraData_ContainerChanges);
 			for (auto entry = addedContainer->data->objList->Begin(); !entry.End(); ++entry)

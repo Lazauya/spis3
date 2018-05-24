@@ -1,10 +1,26 @@
+#pragma once
+
 #include "cbed\CustomBaseExtraData.h"
 
-#ifndef ED_H_
-#define ED_H_
+#include <unordered_map>
+#include <list>
 
 namespace spis
 {
+	class DurabilityOperation
+	{
+	public:
+		virtual Float32 operator()(Float32 dur, Float32 baseDur) const = 0;
+	};
+
+	class DefaultArithmetic : public DurabilityOperation
+	{
+		Float32 amt;
+	public:
+		DefaultArithmetic(Float32 _amt) : amt(_amt) {};
+		virtual Float32 operator()(Float32 dur, Float32 baseDur) const override { return dur + amt; };
+	};
+
 	class ExtraDurability : public BSExtraData
 	{
 	public:
@@ -22,16 +38,20 @@ namespace spis
 
 		void setDurability(Float32 ndur);
 		void resetDurability();
+		void operate();
 		Float32 baseDurability() const;
 		Float32 durability() const;
 		UInt32 ID() const;
 		
+		//std::list<DurabilityOperation*> operations;
+
 	private:
 		static UInt32 createID_();
 
 		UInt32 ID_;
 		Float32 durability_;
 		Float32 baseDurability_;
+		
 	};
 
 	class DurabilityCompare
@@ -43,5 +63,3 @@ namespace spis
 	void commitDurabilitySortHooks();
 	void overwiteDurabilityVtable();
 }
-
-#endif

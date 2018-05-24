@@ -35,12 +35,15 @@ namespace spis
 		newDur->baseDurability_ = baseDur;
 		newDur->durability_ = dur;
 		newDur->next = nullptr;
+		//newDur->operations.push_back(new DefaultArithmetic(-1));
 		return newDur;
 	}
 
 	ExtraDurability * ExtraDurability::Create(TESForm * baseForm)
 	{
 		std::string s(papyrusForm::GetName(baseForm).data);
+		if(durabilityReference[s].first <= 0 && durabilityReference[s].second <= 0)
+			return ExtraDurability::Create(5, 5);
 		return ExtraDurability::Create(durabilityReference[s].first, durabilityReference[s].second);
 	}
 
@@ -82,6 +85,16 @@ namespace spis
 	void ExtraDurability::resetDurability()
 	{
 		durability_ = baseDurability_;
+	}
+
+	void ExtraDurability::operate()
+	{
+		/*for (auto & op : operations)
+		{
+			durability_ = (*op)(durability_, baseDurability_);
+		}*/
+		durability_ -= 1;
+		durability_ = durability_ > 0 ? durability_ : 0;
 	}
 
 	bool DurabilityCompare::operator()(const StandardItemData * dat, const StandardItemData * dat_)
